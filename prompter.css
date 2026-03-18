@@ -92,7 +92,7 @@ body.theme-dark {
    ================================== */
 .focus-guide {
     position: fixed;
-    top: 35%; left: 0; width: 100vw;
+    top: 50%; left: 0; width: 100vw;
     height: 1px;
     z-index: 100;
     pointer-events: none;
@@ -118,7 +118,9 @@ body.theme-dark {
     border-radius: 20px;
     box-shadow: var(--card-shadow);
     z-index: 3000;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 3000;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
 }
 
 .panel-header {
@@ -142,7 +144,15 @@ body.theme-dark {
 }
 
 .settings-panel.collapsed .panel-body {
-    display: none;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.settings-panel.collapsed .toggle-icon {
+    transform: rotate(-90deg);
 }
 
 /* KÜLÖN HAMBURGER GOMB MOBILON */
