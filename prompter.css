@@ -12,7 +12,7 @@
     --accent-red: #ef4444;
     --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
     
-    --ui-transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --ui-transition: all 0.3s ease-in-out;
 }
 
 /* UNIVERZÁLIS BOX-MODEL JAVÍTÁS - ELENGEDHETETLEN AZ OLDALRA GÖRDÍTÉS ELLEN */
@@ -279,11 +279,11 @@ input[type=range] { width: 100%; accent-color: var(--accent-blue); height: 4px; 
 .is-speaking .settings-panel,
 .is-speaking #debug-bar {
     opacity: 0 !important;
+    visibility: hidden !important; /* MÉG BIZTOSABB */
     pointer-events: none !important;
-    transform: translateY(20px) scale(0.95);
 }
 
-/* Kivétel: A Gear ikon csak picit halványodik el vagy teljesen eltűnik, 
-   de a lebegő irányító gombokat mindenképp elrejtjük */
+/* Letisztult mozgás elrejtéskor */
 .is-speaking .bottom-controls { transform: translate(-50%, 40px); }
-.is-speaking .mobile-toggle { transform: scale(0.5); }
+.is-speaking .mobile-toggle { transform: scale(0.2); }
+

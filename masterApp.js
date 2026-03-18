@@ -151,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Auto-collapse setting panel on start
             document.getElementById('settings-panel').classList.add('collapsed');
+            document.body.classList.add('is-speaking'); // AZONNALI ELTŰNÉS INDÍTÁSKOR
 
             // Screen & Orientation locks
             if (!document.fullscreenElement && document.documentElement.requestFullscreen) {

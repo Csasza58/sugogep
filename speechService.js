@@ -287,7 +287,7 @@ class SpeechRecognitionService {
             let volume = Math.min(100, Math.round((average / 128) * 100));
 
             // Hang jelenlétének érzékelése (Aktív Beszéd Küszöbérték / Threshold)
-            let isSpk = volume > 8; // >8% hangerő felett aktív beszédként érzékeljük
+            let isSpk = volume > 4; // JAVÍTÁS: Még érzékenyebb (4% felett már aktív beszéd)
             
             if (isSpk) {
                 this.lastSpokeTime = Date.now(); // Rögzítjük az utolsó hanghatás idejét
