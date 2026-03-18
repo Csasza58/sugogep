@@ -225,7 +225,7 @@ input[type=range] { width: 100%; margin-top: 4px; accent-color: var(--btn-primar
         width: 100%;
         max-width: 100vw;
         border-radius: 0 0 12px 12px;
-        max-height: 85vh;
+        max-height: 90vh;
     }
     
     /* Gombbál zsugorítás (Hamburger Mód) */
@@ -258,7 +258,7 @@ input[type=range] { width: 100%; margin-top: 4px; accent-color: var(--btn-primar
         display: none !important;
     }
 
-    .panel-body { max-height: 50vh; padding: 12px; }
+    .panel-body { max-height: 800px; padding: 12px; }
     .guide-triangle-left, .guide-triangle-right { display: none; }
     .guide-line { left: 8px; right: 8px; }
 
@@ -268,6 +268,14 @@ input[type=range] { width: 100%; margin-top: 4px; accent-color: var(--btn-primar
 
 /* Fekvő (Landscape) nézet optimalizálás telefonra */
 @media (max-width: 900px) and (orientation: landscape) {
+    .settings-panel {
+        max-height: 100vh; /* Teljesen kitölti a képernyőt ha nyitva van */
+        border-radius: 0;
+    }
+    .settings-panel.collapsed {
+        top: 10px; right: 10px; /* Ne lógjon ki a fekvő biztonsági zónából */
+    }
+
     .text-sizing {
         font-size: 44px; /* Pontos, nagy és olvasható fekvő méret */
         line-height: 1.5;
@@ -279,8 +287,6 @@ input[type=range] { width: 100%; margin-top: 4px; accent-color: var(--btn-primar
         padding-top: 25vh;
         padding-bottom: 50vh;
     }
-    
-    .panel-body { max-height: 45vh; }
 }
 
 /* Álló (Portrait) mobil nézet */
