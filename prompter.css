@@ -136,9 +136,10 @@ body.theme-dark {
 }
 
 .panel-body {
-    padding: 0 20px 20px 20px;
-    max-height: 400px;
+    padding: 10px 20px 20px 20px;
+    max-height: 70vh; /* RESPONSIVE MAGASSÁG */
     overflow-y: auto;
+    scrollbar-width: thin;
 }
 
 .settings-panel.collapsed .panel-body {
@@ -227,13 +228,17 @@ input[type=range] { width: 100%; accent-color: var(--accent-blue); height: 4px; 
 @media (orientation: landscape) {
     .text-sizing { 
         font-size: 44px; 
-        padding-left: 5px; /* Minimális margó fekvőben! */
+        padding-left: 5px; 
         padding-right: 5px;
         width: 100vw;
-        text-align: center; /* Fekvőben sokszor jobb közép-fókusz */
+        text-align: center;
     }
     .bottom-controls { bottom: 15px; }
-    .settings-panel { width: 400px; max-height: 85vh; }
+    .settings-panel { 
+        width: 400px; 
+        top: 10px; right: 10px;
+        max-height: 90vh; 
+    }
 }
 
 /* DEBUG BAR */
