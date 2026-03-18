@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         startBtn.disabled = false;
         restartBtn.disabled = false;
-        document.getElementById('settings-panel').classList.add('collapsed');
+        // KIVÉVE: Nem csukjuk be automatikusan, hogy lehessen nyomni az Indítást
     });
 
     // Új: Vissza az elejére gomb
@@ -139,6 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen().catch(() => {});
             }
+
+            // AUTO-CSUKÁS: Ha elindítjuk az éles felolvasást, a menü automatikusan húzódjon össze!
+            document.getElementById('settings-panel').classList.add('collapsed');
 
             // 2. Képernyő kikapcsolásának megakadályozása (Wake Lock API)
             if ('wakeLock' in navigator) {

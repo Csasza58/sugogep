@@ -262,8 +262,12 @@ input[type=range] { width: 100%; margin-top: 4px; accent-color: var(--btn-primar
     .guide-triangle-left, .guide-triangle-right { display: none; }
     .guide-line { left: 8px; right: 8px; }
 
-    /* Kis méretű debug sáv mobilon */
-    #debug-bar { font-size: 11px; padding: 4px 8px; }
+    /* Kis méretű debug sáv mobilon - feljebb tolva, hogy a mobil nav / swipe bar ne takarja ki! */
+    #debug-bar { 
+        font-size: 11px; 
+        padding: 6px 8px; 
+        bottom: env(safe-area-inset-bottom, 15px); /* Biztonsági zóna! */
+    }
 }
 
 /* Fekvő (Landscape) nézet optimalizálás telefonra */
