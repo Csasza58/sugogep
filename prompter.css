@@ -262,8 +262,8 @@ input[type=range] { width: 100%; margin-top: 4px; accent-color: var(--btn-primar
     .guide-triangle-left, .guide-triangle-right { display: none; }
     .guide-line { left: 8px; right: 8px; }
 
-    /* Debug sáv elrejtése mobilon, hogy ne foglalja a helyet */
-    #debug-bar { display: none; }
+    /* Kis méretű debug sáv mobilon */
+    #debug-bar { font-size: 11px; padding: 4px 8px; }
 }
 
 /* Fekvő (Landscape) nézet optimalizálás telefonra */
