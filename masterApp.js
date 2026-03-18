@@ -110,6 +110,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (debugBar) debugBar.textContent = `❌ Hiba: ${err}`;
                     if (err === 'not-allowed') stopListening();
                 });
+
+                // STEALTH MODE: UI elrejtése beszéd közben
+                let silenceTimer = null;
+                speechService.onVolumeChange((v) => {
+                    if (v.isSpeaking) {
+                        document.body.classList.add('is-speaking');
+                        if (silenceTimer) clearTimeout(silenceTimer);
+                    } else {
+                        if (silenceTimer) clearTimeout(silenceTimer);
+                        silenceTimer = setTimeout(() => {
+                            document.body.classList.remove('is-speaking');
+                        }, 1500); // 1.5 mp csend után jön vissza az UI
+                    }
+                });
             }
 
             speechService.start();
