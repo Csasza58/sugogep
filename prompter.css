@@ -11,6 +11,8 @@
     --accent-green: #10b981;
     --accent-red: #ef4444;
     --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    
+    --ui-transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* UNIVERZÁLIS BOX-MODEL JAVÍTÁS - ELENGEDHETETLEN AZ OLDALRA GÖRDÍTÉS ELLEN */
@@ -265,4 +267,23 @@ input[type=range] { width: 100%; accent-color: var(--accent-blue); height: 4px; 
     padding: 3px 10px; background: rgba(0,0,0,1);
     font-size: 9px; color: #3f3f46; z-index: 5000;
     text-align: center; pointer-events: none;
+    transition: var(--ui-transition);
 }
+
+/* ==================================
+   STEALTH MODE (ELTŰNŐ UI BESZÉD KÖZBEN)
+   ================================== */
+.is-speaking .bottom-controls,
+.is-speaking .mobile-toggle,
+.is-speaking .focus-guide,
+.is-speaking .settings-panel,
+.is-speaking #debug-bar {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(20px) scale(0.95);
+}
+
+/* Kivétel: A Gear ikon csak picit halványodik el vagy teljesen eltűnik, 
+   de a lebegő irányító gombokat mindenképp elrejtjük */
+.is-speaking .bottom-controls { transform: translate(-50%, 40px); }
+.is-speaking .mobile-toggle { transform: scale(0.5); }
