@@ -118,9 +118,7 @@ body.theme-dark {
     border-radius: 20px;
     box-shadow: var(--card-shadow);
     z-index: 3000;
-    z-index: 3000;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
 }
 
 .panel-header {

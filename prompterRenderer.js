@@ -10,7 +10,7 @@ class PrompterRenderer {
     constructor(scrollContainerId, contentContainerId, options = {}) {
         this.scrollContainer = document.getElementById(scrollContainerId);
         this.contentContainer = document.getElementById(contentContainerId);
-        
+        this.options = {
             easingFactor: 0.4, // Gyors, de nem "teleportáló" mozgás
             focusZoneRatio: 0.5,
             onWordClick: null,
