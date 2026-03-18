@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let trackingEngine = null;
     let speechService = null;
     let isListening = false;
+    let wakeLock = null; // ÚJ: Képernyő ébrentartás
     
     const renderer = new PrompterRenderer('prompter-viewport', 'prompter-content', {
         easingFactor: 0.4,
@@ -133,6 +134,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 debugBar.textContent = "🎤 Mikrofon aktív — beszélj...";
                 debugBar.style.color = '#a3e635';
             }
+
+            // 1. Teljes képernyő kérése (mobilon kritikus kihasználni a helyet)
+            if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            }
+
+            // 2. Képernyő kikapcsolásának megakadályozása (Wake Lock API)
+            if ('wakeLock' in navigator) {
+                navigator.wakeLock.request('screen')
+                    .then(lock => { wakeLock = lock; })
+                    .catch(() => {});
+            }
+
+            // 3. Opcionális: Kényszerített fekvő nézet (ha beavatkozást enged a rendszer)
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(() => {});
+            }
             
         } else {
             stopListening();
@@ -147,6 +165,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (debugBar) {
             debugBar.textContent = "Mikrofon leállítva";
             debugBar.style.color = '#a1a1aa';
+        }
+
+        // Tisztítás: Teljes képernyő és Wake Lock elengedése
+        if (document.fullscreenElement && document.exitFullscreen) {
+            document.exitFullscreen().catch(() => {});
+        }
+        if (wakeLock !== null) {
+            wakeLock.release().catch(() => {});
+            wakeLock = null;
+        }
+        if (screen.orientation && screen.orientation.unlock) {
+            screen.orientation.unlock();
         }
     }
 
