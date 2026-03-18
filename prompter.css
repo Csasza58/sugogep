@@ -52,7 +52,7 @@ body.theme-dark {
     width: 100%;
     margin: 0;
     padding-bottom: 80vh; 
-    padding-top: 50vh;
+    padding-top: 35vh; /* KEZDÉS A FELSŐ HARMADNÁL */
     background: transparent;
 }
 
@@ -92,7 +92,7 @@ body.theme-dark {
    ================================== */
 .focus-guide {
     position: fixed;
-    top: 50%; left: 0; width: 100vw;
+    top: 35%; left: 0; width: 100vw;
     height: 1px;
     z-index: 100;
     pointer-events: none;

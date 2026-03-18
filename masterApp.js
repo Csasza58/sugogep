@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const renderer = new PrompterRenderer('prompter-viewport', 'prompter-content', {
         easingFactor: 0.4,
-        focusZoneRatio: 0.5,
+        focusZoneRatio: 0.35,
         onWordClick: (index) => {
             if (trackingEngine) trackingEngine.jumpTo(index);
         }
