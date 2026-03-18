@@ -153,12 +153,9 @@ body.theme-dark {
     color: #a1a1aa;
 }
 
-.settings-panel.collapsed .panel-body {
-    max-height: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    overflow: hidden;
-    opacity: 0;
+.settings-panel.collapsed .panel-body,
+.settings-panel.collapsed .panel-footer {
+    display: none;
 }
 
 .settings-panel.collapsed .toggle-icon {
