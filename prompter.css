@@ -110,7 +110,10 @@ body.theme-dark {
     position: fixed;
     top: 20px; right: 20px;
     width: 320px;
-    max-width: calc(100vw - 40px);
+    max-height: 85vh; /* BIZTONSÁGI HATÁR */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* NINCS KILÓGÁS */
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -137,9 +140,17 @@ body.theme-dark {
 
 .panel-body {
     padding: 10px 20px 20px 20px;
-    max-height: 70vh; /* RESPONSIVE MAGASSÁG */
+    flex: 1; /* KITÖLTI A MARADÉK HELYET */
     overflow-y: auto;
     scrollbar-width: thin;
+}
+
+.panel-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--glass-border);
+    background: rgba(0,0,0,0.2);
+    font-size: 11px;
+    color: #a1a1aa;
 }
 
 .settings-panel.collapsed .panel-body {
