@@ -1,23 +1,25 @@
 :root {
     --bg-color: #000000;
-    --text-pending: #a1a1aa;
+    --text-color: #ffffff;
+    --text-pending: #71717a;
     --text-active: #a3e635;
     --text-completed: #3f3f46;
     
-    --panel-bg: rgba(24, 24, 27, 0.92);
-    --panel-border: rgba(255, 255, 255, 0.1);
-    --btn-primary: #3b82f6;
-    --btn-success: #10b981;
+    --glass-bg: rgba(24, 24, 27, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --accent-blue: #3b82f6;
+    --accent-green: #10b981;
+    --accent-red: #ef4444;
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
 }
 
 body.theme-dark {
     margin: 0;
     padding: 0;
     background-color: var(--bg-color);
-    font-family: 'Inter', sans-serif;
-    color: white;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: var(--text-color);
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     overflow: hidden;
 }
 
@@ -29,7 +31,6 @@ body.theme-dark {
     top: 0; left: 0; right: 0; bottom: 0;
     overflow-y: scroll;
     scrollbar-width: none;
-    -ms-overflow-style: none;
 }
 .prompter-viewport::-webkit-scrollbar { display: none; }
 
@@ -45,282 +46,195 @@ body.theme-dark {
     transform: scaleX(-1) translateZ(0);
 }
 
-/* ==================================
-   HIGH-PERFORMANCE SZÓ STÍLUSOK
-   
-   KRITIKUS: Az aktív szó NEM KAP font-weight változtatást!
-   A vastagabb betű eltérő szélességű, ami sorugrálást okoz.
-   Helyette: háttérszínnel és text-shadow-al emeljük ki.
-   ================================== */
 .text-sizing {
     font-size: 72px;
     line-height: 1.6;
     padding-left: 80px; padding-right: 80px;
-    font-weight: 600; /* Egységes vastagság MINDEN szónak */
+    font-weight: 700;
 }
 
 .p-word {
     display: inline;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.2s, opacity 0.2s;
-    /* JITTER FIX: Minden szó (akár aktív, akár nem) megkapja ezt a térfogatot, így sosem fog a sor átméreteződni/ugrani! */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 2px 4px;
     margin: -2px -4px;
 }
 
-.p-word:hover {
-    background: rgba(163, 230, 53, 0.2); /* Enyhe zöld háttér hoverre */
-}
+.p-word.pending { color: var(--text-pending); }
+.p-word.active { color: #000; background: var(--text-active); }
+.p-word.completed { color: var(--text-completed); }
 
-.p-word:active {
-    transform: scale(0.98);
-}
-
-.p-word.pending {
-    color: var(--text-pending);
-}
-
-.p-word.active {
-    color: #000000;
-    background: var(--text-active);
-    text-shadow: none;
-    /* NINCS padding/margin változtatás -> Nincs sorugrálás! */
-}
-
-.p-word.completed {
-    color: var(--text-completed);
-}
-
-/* ==================================
-   KIJELÖLÉS ELREJTÉSE MÓD
-   ================================== */
 .hide-highlights .p-word {
     color: var(--text-color) !important;
     background: transparent !important;
-    text-shadow: none !important;
     padding: 0 !important;
     margin: 0 !important;
 }
 
-
 /* ==================================
-   FÓKUSZ ZÓNA (Vizuális Segédvonal)
+   FÓKUSZ ZÓNA
    ================================== */
 .focus-guide {
     position: fixed;
-    top: 35%;
-    left: 0; right: 0;
-    height: 2px;
-    z-index: 1000;
+    top: 35%; left: 0; right: 0;
+    height: 1px;
+    z-index: 100;
     pointer-events: none;
-    opacity: 0.5;
 }
 .guide-line {
-    position: absolute;
-    top: 0; left: 20px; right: 20px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(163,230,53, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, var(--text-active), transparent);
+    opacity: 0.5;
 }
-.guide-triangle-left, .guide-triangle-right {
-    position: absolute; top: -6px;
-    border-top: 6px solid transparent;
-    border-bottom: 6px solid transparent;
-}
-.guide-triangle-left { left: 6px; border-left: 10px solid var(--text-active); }
-.guide-triangle-right { right: 6px; border-right: 10px solid var(--text-active); }
-
 
 /* ==================================
-   BEÁLLÍTÁSOK PANEL (LEBEGŐ)
+   GLASSMORPHISM PANEL (BEÁLLÍTÁSOK)
    ================================== */
 .settings-panel {
     position: fixed;
-    top: 10px;
-    right: 10px;
-    width: 340px;
-    max-width: calc(100vw - 20px);
-    background: var(--panel-bg);
+    top: 20px; right: 20px;
+    width: 320px;
+    background: var(--glass-bg);
     backdrop-filter: blur(20px);
-    border: 1px solid var(--panel-border);
-    border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    z-index: 9999;
-    color: #e4e4e7;
-    font-family: sans-serif;
-    font-size: 14px;
-    max-height: calc(100vh - 20px);
-    overflow-y: auto;
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    z-index: 3000;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .panel-header {
+    padding: 16px 20px;
     display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 16px; cursor: pointer;
-    background: rgba(255,255,255,0.05);
-    border-bottom: 1px solid var(--panel-border);
-    border-top-left-radius: 12px; border-top-right-radius: 12px;
-    position: sticky; top: 0; z-index: 1;
+    cursor: pointer;
 }
-.panel-header h3 { margin: 0; font-size: 1rem; font-weight: 600; }
-.toggle-icon { font-size: 1.2rem; transition: transform 0.3s; }
-.toggle-icon::before { content: '✕'; } /* Alapértelmezett "nyitva" ikon */
-.settings-panel.collapsed .toggle-icon::before { content: '☰'; } /* "Csukva" ikon */
+.panel-header h3 { margin: 0; font-size: 0.95rem; font-weight: 700; letter-spacing: -0.02em; }
+
+.toggle-icon { 
+    width: 24px; height: 24px; 
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    transition: 0.3s;
+}
 
 .panel-body {
-    padding: 16px;
-    font-size: 0.9rem;
-    overflow: hidden;
-    transition: max-height 0.35s ease, padding 0.35s ease;
-    max-height: 600px;
-}
-.settings-panel.collapsed .panel-body {
-    max-height: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0 20px 20px 20px;
+    max-height: 500px;
+    overflow-y: auto;
 }
 
-.control-group { margin-bottom: 14px; }
-.control-group h4 { margin: 0 0 10px 0; color: #f4f4f5; font-size: 0.95rem; }
-label { display: block; margin-bottom: 6px; color: #a1a1aa; font-weight: 500; font-size: 0.85rem;}
+.settings-panel.collapsed {
+    transform: translateY(-20px) scale(0.95);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* KÜLÖN HAMBURGER GOMB MOBILON */
+.mobile-toggle {
+    display: none;
+    position: fixed;
+    top: 20px; right: 20px;
+    width: 56px; height: 56px;
+    background: var(--accent-blue);
+    border-radius: 50%;
+    z-index: 3100;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    align-items: center; justify-content: center;
+    cursor: pointer;
+    border: none;
+    color: white; font-size: 24px;
+    transition: transform 0.2s;
+}
+.mobile-toggle:active { transform: scale(0.9); }
+
+.control-group { margin-top: 20px; }
+.control-group label { display: block; font-size: 0.7rem; color: #a1a1aa; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
 
 textarea {
-    width: 100%; box-sizing: border-box;
-    background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 6px; padding: 10px; color: white; resize: vertical;
-    margin-bottom: 10px; font-size: 14px;
+    width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
+    border-radius: 12px; padding: 12px; color: white; font-size: 14px;
+    margin-bottom: 12px; font-family: inherit;
 }
-textarea:focus { outline: none; border-color: var(--btn-primary); }
 
-input[type=range] { width: 100%; margin-top: 4px; accent-color: var(--btn-primary); }
-
-.btn {
-    width: 100%; padding: 12px; border: none; border-radius: 6px;
-    font-weight: 600; font-size: 1rem; cursor: pointer; color: white;
-    transition: all 0.2s;
-}
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.primary-btn { background: var(--btn-primary); }
-.success-btn { background: var(--btn-success); box-shadow: 0 4px 15px rgba(16,185,129,0.3); }
-.primary-btn:hover:not(:disabled) { background: #2563eb; }
-.success-btn:hover:not(:disabled) { background: #059669; }
-
-.separator { border: 0; height: 1px; background: rgba(255,255,255,0.1); margin: 14px 0; }
-.status-info { margin-top: 10px; text-align: center; font-variant-numeric: tabular-nums; font-size: 0.9rem;}
-.safe { color: var(--text-active); }
-
-.panel-footer {
-    padding: 12px 16px;
-    border-top: 1px solid var(--panel-border);
-}
+/* SLIDERS */
+input[type=range] { width: 100%; accent-color: var(--accent-blue); height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); cursor: pointer; }
 
 /* ==================================
-   MOBIL OPTIMALIZÁCIÓ (Hamburger & Fekvő Mód)
+   LEBEGŐ IRÁNYÍTÓPULT (BOTTOM CONTROLS)
    ================================== */
+.bottom-controls {
+    position: fixed;
+    bottom: 30px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 12px; align-items: center;
+    background: rgba(24, 24, 27, 0.8);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    padding: 10px 20px;
+    border-radius: 40px;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--card-shadow);
+    z-index: 4000;
+}
 
-/* Alap mobil nézet (álló és kisebb fekvő) */
+.action-btn {
+    border: none; border-radius: 30px; 
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+    font-family: inherit;
+}
+
+.circle-btn {
+    width: 44px; height: 44px;
+    background: rgba(255,255,255,0.08);
+    font-size: 1.1rem;
+}
+
+.play-btn {
+    height: 44px; padding: 0 24px;
+    background: var(--accent-green);
+    color: #000; font-weight: 700; font-size: 0.9rem;
+    gap: 8px;
+}
+.play-btn.active { 
+    background: var(--accent-red); 
+    color: white; 
+}
+
+.action-btn:hover:not(:disabled) { transform: translateY(-2px); }
+.action-btn:active:not(:disabled) { transform: translateY(0) scale(0.96); }
+.action-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* ==================================
+   MOBIL ÉS LANDSCAPE
+   ================================== */
 @media (max-width: 900px) {
+    .mobile-toggle { display: flex; }
     .settings-panel {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        top: 0; right: 0; left: 0;
-        width: 100%;
-        max-width: 100vw;
-        border-radius: 0 0 12px 12px;
-        max-height: 90vh;
+        top: 90px; right: 20px; left: 20px; width: auto;
     }
-    
-    /* Gombbál zsugorítás (Hamburger Mód) */
-    .settings-panel.collapsed {
-        width: 56px !important;
-        height: 56px !important;
-        background: var(--btn-primary);
-        border-radius: 28px !important;
-        top: 16px;
-        right: 16px;
-        left: auto !important;
-        overflow: hidden;
-        border: none;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-    }
-
-    .settings-panel.collapsed .panel-header {
-        background: transparent;
-        border: none;
-        padding: 0;
-        height: 100%;
-        justify-content: center;
-    }
-
-    .settings-panel.collapsed h3 { display: none; }
-    .settings-panel.collapsed .toggle-icon { color: white; margin-top: 4px; }
-    
-    .settings-panel.collapsed .panel-footer,
-    .settings-panel.collapsed .panel-body {
-        display: none !important;
-    }
-
-    .panel-body { max-height: 800px; padding: 12px; }
-    .guide-triangle-left, .guide-triangle-right { display: none; }
-    .guide-line { left: 8px; right: 8px; }
-
-    /* Kis méretű debug sáv mobilon - feljebb tolva, hogy a mobil nav / swipe bar ne takarja ki! */
-    #debug-bar { 
-        font-size: 11px; 
-        padding: 6px 8px; 
-        bottom: env(safe-area-inset-bottom, 15px); /* Biztonsági zóna! */
-    }
+    .text-sizing { font-size: 36px; padding: 0 20px; }
+    .bottom-controls { bottom: 20px; }
 }
 
-/* Fekvő (Landscape) nézet optimalizálás telefonra */
-@media (max-width: 900px) and (orientation: landscape) {
-    .settings-panel {
-        max-height: 100vh; /* Teljesen kitölti a képernyőt ha nyitva van */
-        border-radius: 0;
-    }
-    .settings-panel.collapsed {
-        top: 10px; right: 10px; /* Ne lógjon ki a fekvő biztonsági zónából */
-    }
-
-    .text-sizing {
-        font-size: 44px; /* Pontos, nagy és olvasható fekvő méret */
-        line-height: 1.5;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-    
-    .prompter-content {
-        padding-top: 25vh;
-        padding-bottom: 50vh;
-    }
+@media (orientation: landscape) and (max-height: 500px) {
+    .bottom-controls { bottom: 10px; padding: 6px 12px; }
+    .action-btn { height: 38px; }
+    .circle-btn { width: 38px; }
+    .text-sizing { font-size: 44px; }
+    .settings-panel { top: 10px; right: 10px; left: 10px; max-height: 80vh; }
 }
 
-/* Álló (Portrait) mobil nézet */
-@media (max-width: 600px) and (orientation: portrait) {
-    .text-sizing {
-        font-size: 38px;
-        line-height: 1.5;
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-    .panel-header h3 { font-size: 0.9rem; }
-    .btn { padding: 10px; font-size: 0.9rem; }
-    textarea { font-size: 13px; }
-}
-
-/* ==================================
-   DEBUG SÁV (képernyő alja)
-   ================================== */
+/* DEBUG BAR */
 #debug-bar {
     position: fixed;
     bottom: 0; left: 0; right: 0;
-    padding: 8px 16px;
-    background: rgba(0,0,0,0.85);
-    border-top: 2px solid rgba(255,255,255,0.1);
-    color: #a1a1aa;
-    font-family: 'Inter', monospace;
-    font-size: 13px;
-    z-index: 99999;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    padding: 4px 10px; background: rgba(0,0,0,0.95);
+    font-size: 10px; color: #52525b; z-index: 5000;
+    text-align: center; pointer-events: none;
+    letter-spacing: 0.02em;
 }
-
