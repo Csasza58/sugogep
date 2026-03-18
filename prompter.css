@@ -128,9 +128,21 @@ body.theme-dark {
 }
 
 .settings-panel.collapsed {
-    transform: translateY(-20px) scale(0.95);
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.settings-panel.collapsed .panel-body {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
     opacity: 0;
     pointer-events: none;
+}
+
+.settings-panel.collapsed .toggle-icon {
+    transform: rotate(-90deg);
 }
 
 /* KÜLÖN HAMBURGER GOMB MOBILON */
