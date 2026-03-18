@@ -61,12 +61,13 @@ body.theme-dark {
 }
 
 .text-sizing {
-    font-size: 80px; /* Megemelt alapméret */
+    font-size: 80px;
     line-height: 1.5;
     padding-left: 60px; padding-right: 60px;
     font-weight: 700;
     word-wrap: break-word;
     white-space: normal;
+    text-align: center; /* VÍZSZINTES KÖZÉPRE IGAZÍTÁS */
 }
 
 .p-word {
@@ -91,15 +92,16 @@ body.theme-dark {
    ================================== */
 .focus-guide {
     position: fixed;
-    top: 35%; left: 0; width: 100vw;
+    top: 50%; left: 0; width: 100vw;
     height: 1px;
     z-index: 100;
     pointer-events: none;
+    display: flex; align-items: center; justify-content: center;
 }
 .guide-line {
-    height: 1px;
+    width: 100%; height: 2px;
     background: linear-gradient(90deg, transparent, var(--text-active), transparent);
-    opacity: 0.5;
+    opacity: 0.8;
 }
 
 /* ==================================
@@ -107,9 +109,12 @@ body.theme-dark {
    ================================== */
 .settings-panel {
     position: fixed;
-    top: 20px; right: 20px;
+    top: 80px; right: 20px; /* Lejjebb toljuk a gear ikontól */
     width: 320px;
-    max-width: calc(100vw - 40px);
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -117,7 +122,13 @@ body.theme-dark {
     border-radius: 20px;
     box-shadow: var(--card-shadow);
     z-index: 3000;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.3s ease;
+}
+
+.settings-panel.collapsed {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.9) translateY(-20px);
 }
 
 .panel-header {
@@ -135,30 +146,46 @@ body.theme-dark {
 }
 
 .panel-body {
-    padding: 0 20px 20px 20px;
-    max-height: 400px;
+    padding: 10px 20px 20px 20px;
+    flex: 1; /* KITÖLTI A MARADÉK HELYET */
     overflow-y: auto;
+    scrollbar-width: thin;
 }
 
-.settings-panel.collapsed .panel-body {
+.panel-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--glass-border);
+    background: rgba(0,0,0,0.2);
+    font-size: 11px;
+    color: #a1a1aa;
+}
+
+.settings-panel.collapsed .panel-body,
+.settings-panel.collapsed .panel-footer {
     display: none;
 }
 
-/* KÜLÖN HAMBURGER GOMB MOBILON */
+.settings-panel.collapsed .toggle-icon {
+    transform: rotate(-90deg);
+}
+
+/* GEÁR IKON - MINDIG ELÉRHETŐ SZINKRONBAN */
 .mobile-toggle {
-    display: none;
+    display: flex; /* Mindig látható asztalin is */
     position: fixed;
     top: 20px; right: 20px;
-    width: 50px; height: 50px;
-    background: var(--accent-blue);
+    width: 44px; height: 44px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
     border-radius: 50%;
-    z-index: 3100;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    z-index: 3500;
     align-items: center; justify-content: center;
     cursor: pointer;
-    border: none;
     color: white; font-size: 20px;
+    transition: 0.2s;
 }
+.mobile-toggle:hover { background: var(--accent-blue); }
 
 .control-group { margin-top: 15px; }
 .control-group label { display: block; font-size: 0.65rem; color: #71717a; font-weight: 700; margin-bottom: 5px; text-transform: uppercase; }
@@ -218,13 +245,17 @@ input[type=range] { width: 100%; accent-color: var(--accent-blue); height: 4px; 
 @media (orientation: landscape) {
     .text-sizing { 
         font-size: 44px; 
-        padding-left: 5px; /* Minimális margó fekvőben! */
+        padding-left: 5px; 
         padding-right: 5px;
         width: 100vw;
-        text-align: center; /* Fekvőben sokszor jobb közép-fókusz */
+        text-align: center;
     }
     .bottom-controls { bottom: 15px; }
-    .settings-panel { width: 400px; max-height: 85vh; }
+    .settings-panel { 
+        width: 400px; 
+        top: 10px; right: 10px;
+        max-height: 90vh; 
+    }
 }
 
 /* DEBUG BAR */

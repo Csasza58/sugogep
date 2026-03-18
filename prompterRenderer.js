@@ -127,7 +127,9 @@ class PrompterRenderer {
         const el = this.domElements[this.activeIndex];
         const focusOffset = this.scrollContainer.clientHeight * this.options.focusZoneRatio;
         
-        this.targetScrollY = Math.max(0, el.offsetTop - focusOffset);
+        // JAVÍTÁS: A szó KÖZEPÉT igazítjuk a vonalhoz, nem az elejét!
+        const wordMidpoint = el.offsetTop + el.offsetHeight / 2;
+        this.targetScrollY = Math.max(0, wordMidpoint - focusOffset);
     }
 
     /**
@@ -149,8 +151,8 @@ class PrompterRenderer {
                 const nextEl = this.domElements[nextIndex];
 
                 if (baseEl && nextEl) {
-                    const basePos = baseEl.offsetTop;
-                    const nextPos = nextEl.offsetTop;
+                    const basePos = baseEl.offsetTop + baseEl.offsetHeight / 2;
+                    const nextPos = nextEl.offsetTop + nextEl.offsetHeight / 2;
                     
                     const interpolatedY = basePos + (nextPos - basePos) * fraction;
                     const focusOffset = this.scrollContainer.clientHeight * this.options.focusZoneRatio;
