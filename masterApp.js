@@ -113,6 +113,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // STEALTH MODE: UI elrejtése beszéd közben
                 let silenceTimer = null;
+                const showUI = () => {
+                    document.body.classList.remove('is-speaking');
+                    if (silenceTimer) clearTimeout(silenceTimer);
+                };
+
+                // KATTINTÁSRA MINDIG JÖJJÖN VISSZA (Biztonsági sáv)
+                window.addEventListener('click', (e) => {
+                    // Ha nem gombra vagy beviteli mezőre kattintunk
+                    if (isListening && !e.target.closest('.action-btn, .settings-panel, .mobile-toggle')) {
+                        showUI();
+                        // 3 másodpercig tartsuk kint, ha manuálisan kértük
+                        silenceTimer = setTimeout(() => {}, 3000); 
+                    }
+                });
+
                 speechService.onVolumeChange((v) => {
                     if (v.isSpeaking) {
                         document.body.classList.add('is-speaking');
@@ -120,8 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else {
                         if (silenceTimer) clearTimeout(silenceTimer);
                         silenceTimer = setTimeout(() => {
-                            document.body.classList.remove('is-speaking');
-                        }, 1500); // 1.5 mp csend után jön vissza az UI
+                            showUI();
+                        }, 1500); 
                     }
                 });
             }
@@ -156,6 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function stopListening() {
         if (speechService) speechService.stop();
         isListening = false;
+        document.body.classList.remove('is-speaking');
         
         startBtn.classList.remove('active');
         startBtn.querySelector('.icon').textContent = "▶";
