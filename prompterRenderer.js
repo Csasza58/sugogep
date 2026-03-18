@@ -164,7 +164,17 @@ class PrompterRenderer {
         const diff = this.targetScrollY - this.currentScrollY;
         
         if (Math.abs(diff) > 0.5) {
-            this.currentScrollY += diff * this.options.easingFactor;
+            let step = diff * this.options.easingFactor;
+            
+            // SEBESSÉG LIMITÁLÁS VÉDELEM (TELEPORTÁLÁS ELLEN):
+            // Ha a Google egyszerre kiköp 15 szót (vagy mi ugrottunk a sliderrel), 
+            // a sorozat ne engedje "odarátni" (teleportálni) a képernyőt, hanem 
+            // villámgyorsan, de az emberi szemnek követhetően (max 15px/frame -> ~900px/mp) görgessen!
+            const maxStep = 15;
+            if (step > maxStep) step = maxStep;
+            if (step < -maxStep) step = -maxStep;
+
+            this.currentScrollY += step;
             this.scrollContainer.scrollTop = this.currentScrollY;
         }
 
