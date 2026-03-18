@@ -62,10 +62,10 @@ class SpeechRecognitionService {
         this.recognition.onresult = (event) => {
             const now = Date.now();
             
-            // SZELLEMPUFFER VÉDELEM
-            // Ha a helyi mikrofon >1.5 másodperce csendet érzékel, és a Google most dob vissza 
-            // egy masszív szókészletet (mert beragadt a szervere), DOBJUK EL, hogy ne ugráljon a képernyő!
-            if (now - this.lastSpokeTime > 1500) {
+            // SZELLEMPUFFER VÉDELEM (Csak asztali gépen, ahol fut a VAD)
+            // Ha a helyi mikrofon >1.5 másodperce csendet érzékel...
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            if (!isMobile && (now - this.lastSpokeTime > 1500)) {
                 console.warn("[VÉDELEM] ASR adat eldobva: A szerver 1.5mp-nél többet késett a csendben.");
                 return;
             }
@@ -120,6 +120,7 @@ class SpeechRecognitionService {
             this.isRecognizing = false;
             // Ha a szolgáltatás megszakadt a felhasználó parancsa nélkül -> Újraindítás
             if (!this.isManuallyStopped) {
+                // Mobilon (iOS) hírhedt a hívás megszakadása "continuous" ellenére
                 this._safeRestart();
             } else {
                 this._stopAudioAnalyzer();
@@ -235,6 +236,18 @@ class SpeechRecognitionService {
     async _startAudioAnalyzer() {
         if (this.audioContext && this.audioContext.state !== 'closed') return;
         
+        // MOBIL HARDVER KONFLIKTUS VÉDELEM:
+        // A telefonok (iOS/Android) szigorúan zárolják a mikrofont 1 processznek.
+        // Ha a WebAudio VAD és a SpeechRecognition egyszerre kéri el a mikrofont, összeomlik.
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (isMobile) {
+            console.warn("Mobil eszköz érzékelve: WebAudio VAD kikapcsolva, hogy ne lophassa el a mikrofont az ASR-től.");
+            // Szimuláljuk, hogy beszél, hogy ne essen ki a ghost-buffer védelemből
+            this.isSpeaking = true;
+            this.lastSpokeTime = Date.now();
+            return;
+        }
+
         try {
             // Natív user stream elkérése elemzés céljából
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
