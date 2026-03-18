@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASR Stream Motor Demo - Mérföldkő 2.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="speech.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <header class="header">
+            <div class="badge">Mérföldkő 2</div>
+            <h1>Böngésző ASR & VAD Stream</h1>
+            <p>Alacsony késleltetésű, megszakítás-tűrő audio jelfolyam analizálás, ami valós időben szolgáltatja a "Delta" szavakat a Prompter számára.</p>
+        </header>
+
+        <!-- Dashboard: Status & Controls -->
+        <section class="dashboard">
+            <div class="mic-panel glass-panel">
+                <div class="mic-button" id="mic-btn">
+                    <svg class="mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                </div>
+                <div class="status-indicator">
+                    <div id="status-dot" class="dot offline"></div>
+                    <span id="status-text">Készenlét (Kattints a mikrofonra)</span>
+                </div>
+            </div>
+
+            <div class="vad-panel glass-panel">
+                <h3>Voice Activity (VAD)</h3>
+                <div class="meter-container">
+                    <div class="meter-bar">
+                        <div class="meter-fill" id="volume-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="vad-state">
+                    Beszédállapot: <strong id="speaking-text" class="not-speaking">Csend</strong>
+                    <span class="vol-label" id="vol-label">0%</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Stream Visualization -->
+        <section class="stream-panel glass-panel">
+            <div class="panel-header">
+                <h3>Valós idejű Stream Adatfolyam</h3>
+                <div class="legend">
+                    <span class="legend-item"><span class="color-box interim-box"></span> Részleges (Interim)</span>
+                    <span class="legend-item"><span class="color-box final-box"></span> Véglegesített (Final)</span>
+                </div>
+            </div>
+            
+            <div class="transcript-container" id="transcript-container">
+                <div class="empty-state" id="stream-empty">Várakozás a beszédre...</div>
+                <!-- Words will be injected here -->
+            </div>
+        </section>
+
+        <!-- Event Log (Dev View) -->
+        <section class="log-panel glass-panel">
+            <div class="panel-header">
+                <h3>Prompter Payload (Console Log)</h3>
+                <button id="clear-log-btn" class="btn small-btn">Törlés</button>
+            </div>
+            <pre><code id="payload-log"></code></pre>
+        </section>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="speechService.js"></script>
+    <script src="speech.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mester Prompter - 4. Mérföldkő (Vajpuha Görgetés)</title>
+    <!-- Modern Betűtípusok az olvashatósághoz -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="prompter.css">
+</head>
+<body class="theme-dark">
+
+    <!-- Fókusz Zóna Segédvonal (35% fentről by default) -->
+    <div class="focus-guide" id="focus-guide">
+        <div class="guide-line"></div>
+        <div class="guide-triangle-left"></div>
+        <div class="guide-triangle-right"></div>
+    </div>
+
+    <!-- Fő Prompter Viewport -->
+    <div id="prompter-viewport" class="prompter-viewport">
+        <!-- A szöveg renderelésének helye -->
+        <div id="prompter-content" class="prompter-content text-sizing">
+            Valós idejű vajpuha görgető és rendering motor.<br/><br/>
+            Nyisd meg a jobb felső "Beállítások" panelt a szkript betöltéséhez és a felület testreszabásához!
+        </div>
+    </div>
+
+    <!-- Interaktív Beállítások Panel (Lebegő a jobb felső sarokban) -->
+    <div class="settings-panel" id="settings-panel">
+        <div class="panel-header" id="panel-toggle">
+            <h3>Mester Prompter Panel</h3>
+            <span class="toggle-icon"></span>
+        </div>
+        
+        <div class="panel-body">
+            
+            <div class="control-group">
+                <label>Szkript (Nyers Felolvasandó)</label>
+                <textarea id="script-input" rows="4">Ez az utolsó, negyedik mérföldkő! Itt kipróbálhatod a "Vajpuha" görgető motort, ami lineáris interpolációt használ, úgynevezett LERP technikát a tökéletesen sima mozgásért. Még akkor is kalkulál és tolja előre a szöveget a fókusz zónában, ha épp csönd van, hogy a tempó sose akadjon meg. A prediktív technológia teszi igazán profivá ezt a fejlesztést.</textarea>
+                <button id="btn-load" class="btn primary-btn">1. Szkript Betöltése</button>
+            </div>
+
+            <hr class="separator"/>
+
+            <div class="control-group">
+                <h4>Vizuális Extrák</h4>
+                
+                <!-- Font Size -->
+                <div class="slider-box">
+                    <label>Betűméret (<span id="val-fs">72</span>px)</label>
+                    <input type="range" id="set-fs" min="40" max="120" value="72">
+                </div>
+
+                <!-- Line Height -->
+                <div class="slider-box">
+                    <label>Sormagasság (<span id="val-lh">1.5</span>)</label>
+                    <input type="range" id="set-lh" min="1.1" max="2.5" step="0.1" value="1.5">
+                </div>
+
+                <!-- Margók (Padding) -->
+                <div class="slider-box">
+                    <label>Bekezdés Margó (<span id="val-pad">100</span>px)</label>
+                    <input type="range" id="set-pad" min="20" max="400" value="100">
+                </div>
+                
+                <!-- Fókusz Vonala -->
+                <div class="slider-box">
+                    <label>Anchor (Fókusz Zóna) (<span id="val-anch">35</span>%)</label>
+                    <input type="range" id="set-anch" min="10" max="90" value="35">
+                </div>
+
+                <div class="toggles">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="set-mirror">
+                        <span class="custom-check"></span> Tükrözés (Mirror Mode)
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="set-guide" checked>
+                        <span class="custom-check"></span> Fókusz Vonal Mutatása
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="set-highlight" checked>
+                        <span class="custom-check"></span> Szó Kijelölés Mutatása
+                    </label>
+                </div>
+            </div>
+
+            <hr class="separator"/>
+
+        </div>
+
+        <div class="panel-footer" style="display: flex; gap: 10px;">
+            <button id="btn-restart" class="btn primary-btn" disabled>↺ Elejére</button>
+            <button id="btn-start" class="btn success-btn" disabled>🎙️ 2. Éles Indítás</button>
+        </div>
+        <div class="panel-footer">
+            <div class="status-info">
+                <span id="sys-status" class="safe">Normál</span> | <span id="sys-wpm">0 WPM</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Debug Sáv (Élő ASR visszajelzés) -->
+    <div id="debug-bar">Tölts be szkriptet és indítsd el a mikrofont</div>
+
+    <!-- System Requirements: Milestones 1-4 Classes -->
+    <script src="tokenizer.js"></script>
+    <script src="speechService.js"></script>
+    <script src="trackingEngine.js"></script>
+    <script src="prompterRenderer.js"></script>
+    
+    <!-- Integration Logic -->
+    <script src="masterApp.js"></script>
+</body>
+</html>

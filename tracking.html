@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking Engine Demo - Mérföldkő 3.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tracking.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <header class="header">
+            <div class="badge">Mérföldkő 3</div>
+            <h1>Intelligens Összeillesztő Motor</h1>
+            <p>Szöveg (Tokenizer) + Beszéd (SpeechService) összekötése. Próbálj kihagyni szavakat, mondj töltelékszavakat, vagy ugorj a szövegben!</p>
+        </header>
+
+        <section class="controls glass-panel">
+            <div class="input-group">
+                <label for="script-input">Szkript (Nyers Felolvasandó Szöveg)</label>
+                <textarea id="script-input">A kft. 2024-ben indult el. Ma kb. 200 Ft-ot költöttünk a teszt során. Az 1. mondat után ez egy nagyon hosszú szöveg amiben hirtelen ugrálok előre. Kíváncsi vagyok, hogy a rendszer meg tudja-e találni a fókuszt, ha hirtelen eltévedek. Érdekes technológia ez a csúszóablak.</textarea>
+            </div>
+            
+            <div class="actions">
+                <button id="load-btn" class="btn primary-btn">
+                    <svg viewBox="0 0 24 24" fill="none" class="btn-icon" stroke="currentColor"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                    Betöltés (Tokenizálás)
+                </button>
+                <div class="divider"></div>
+                <button id="start-track-btn" class="btn secondary-btn" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" class="btn-icon" stroke="currentColor"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                    <span id="mic-text">Követés Indítása (Mikrofon)</span>
+                </button>
+            </div>
+            
+            <div class="stats-row">
+                <div class="stat"><span class="label">Beszéd:</span> <span id="stat-vad" class="val">Csend</span></div>
+                <div class="stat"><span class="label">Sebesség:</span> <span id="stat-wpm" class="val">0 WPM</span></div>
+                <div class="stat"><span class="label">Állapot:</span> <span id="stat-panic" class="val safe">Normál (Kész)</span></div>
+                <div class="stat"><span class="label">Egyezés:</span> <span id="stat-conf" class="val">100%</span></div>
+            </div>
+        </section>
+
+        <!-- Prompter View (Simulation) -->
+        <section class="prompter-view glass-panel">
+            <h3 class="view-title">Olvasó Felület (Teleprompter)</h3>
+            <div id="prompter-content" class="prompter-text">
+                <div class="empty-state">Kattints a "Betöltés" gombra a szkript inicializálásához.</div>
+            </div>
+        </section>
+
+        <!-- Fallback/Debug Input if microphone fails -->
+        <section class="debug-panel glass-panel">
+            <h3 class="view-title">Manual Inject (Ha nincs mikrofon vagy tesztelni akarsz)</h3>
+            <div class="dev-controls">
+                <input type="text" id="dev-word" placeholder="Tegyél úgy, mintha ezt mondtad volna (egy szó)..." />
+                <button id="dev-send" class="btn outline-btn">Küldés a Tracking Enginenek (ASR Szimuláció)</button>
+            </div>
+            <p class="dev-note">Próbáld ki a homályos illesztést: küldd be, hogy "kétezerhúsz" (2024 helyett) vagy "körülbelől" (kb. helyett)!</p>
+        </section>
+
+    </div>
+
+    <!-- Hivatkozás a 3 mérföldkő fájljaira -->
+    <script src="tokenizer.js"></script>
+    <script src="speechService.js"></script>
+    <script src="trackingEngine.js"></script>
+    <script src="tracking.js"></script>
+</body>
+</html>
